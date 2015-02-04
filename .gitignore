@@ -1,0 +1,51 @@
+# maven ignore
+target/
+_build/
+production/
+
+# eclipse ignore
+.settings/
+.project
+.classpath
+bin/
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+
+# svn
+.svn/
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# temp ignore
+*.log.*
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+*.bak
+*.bkp
+*.swp
+*.class
+~$*
+temp/
+log/
+logs/
+
+# mac folder config file
+.DS_Store
+# windows image file caches
+Thumbs.db
+# windows folder config file
+Desktop.ini
+
+#hsf
+hsf.configuration/
+eclipse.bat
