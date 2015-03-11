@@ -6,7 +6,15 @@
 	
 	<bean name="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="jobFactory" ref="jobFactory" />
 	</bean>	
 	
+	<bean name="jobFactory" class="com.netboy.quartz.job.BeanJobFactory" >
+		<property name="port" ref="port" />
+	</bean>
+	 
+	<bean id="port" class="java.lang.Integer">
+        <constructor-arg value="8061" />
+    </bean>
 
 </beans>
