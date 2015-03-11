@@ -3,59 +3,54 @@ package com.netboy.quartz.stateless;
 import java.io.Serializable;
 import java.util.Map;
 
-public class TaskJob implements Serializable {
-	/**
-	 * 
-	 */
+public class JobDO implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
-	/** 任务id */
 	private String jobId;
 
-	/** 任务名称 */
 	private String jobName;
 
-	/** 任务分组 */
 	private String jobGroup;
 
 	/** 任务状态 0禁用 1启用 2删除 */
 	private String jobStatus;
 
-	/** 任务运行时间表达式 */
 	private String cronExpression;
 
-	/** 任务描述 */
+	/** job's desc */
 	private String desc;
-
+	
+	private String ips;//逗号分隔
 	/**
-	 *  job's data 
+	 * job's data
 	 */
 	private Map<String, Object> dataMap;
 
-	public TaskJob(String jobId,String jobName,String jobGroup, String jobStatus,String cronExpression, String desc){
+	public JobDO(String jobId, String jobName, String jobGroup, String jobStatus, String cronExpression, String desc,String ips) {
 		this.jobId = jobId;
-		this.jobName= jobName;
+		this.jobName = jobName;
 		this.jobGroup = jobGroup;
 		this.jobStatus = jobStatus;
 		this.cronExpression = cronExpression;
 		this.desc = desc;
+		this.ips = ips;
 	}
-	
-	public TaskJob(String jobName,String jobGroup,String cronExpression){
-		this.jobName= jobName;
-		this.jobGroup = jobGroup;
-		this.cronExpression = cronExpression;
+
+	public JobDO(String jobName, String jobGroup, String cronExpression,String ips) {
+		this(null, jobName, jobGroup, null, cronExpression, null, ips);
 	}
-	
-	public TaskJob(String jobName,String jobGroup){
-		this.jobName= jobName;
-		this.jobGroup = jobGroup;
+	public JobDO(String jobName, String jobGroup, String cronExpression){
+		this(null, jobName, jobGroup, null, cronExpression, null, null);
 	}
-	
-	public TaskJob(){
-		
+	public JobDO(String jobName, String jobGroup) {
+		this(null, jobName, jobGroup, null, null, null, null);
 	}
-	
+
+	public JobDO() {
+
+	}
+
 	public String getJobId() {
 		return jobId;
 	}
@@ -110,6 +105,18 @@ public class TaskJob implements Serializable {
 
 	public void setDataMap(Map<String, Object> dataMap) {
 		this.dataMap = dataMap;
+	}
+
+	public String getIps() {
+		return ips;
+	}
+
+	public void setIps(String ips) {
+		this.ips = ips;
+	}
+
+	public String toString() {
+		return "id=" + jobId + "--group=" + jobGroup + "--job=" + jobName;
 	}
 
 }
