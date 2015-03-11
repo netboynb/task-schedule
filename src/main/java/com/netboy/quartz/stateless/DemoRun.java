@@ -23,6 +23,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.google.common.collect.Lists;
+import com.netboy.quartz.job.JobTask;
+import com.netboy.quartz.utils.JobUtils;
 import com.netboy.zk.demo.discovery.ExampleServer;
 import com.netboy.zk.demo.discovery.InstanceDetails;
 
@@ -33,9 +35,9 @@ public class DemoRun {
 		Scheduler scheduler = (StdScheduler) springContext.getBean("schedulerFactoryBean");
 
 		// 这里获取任务信息数据
-		List<TaskJob> jobList = DataWorkContext.getAllJob();
+		List<JobDO> jobList = DataWorkContext.getAllJob();
 
-		for (TaskJob job : jobList) {
+		for (JobDO job : jobList) {
 
 			TriggerKey triggerKey = TriggerKey.triggerKey(job.getJobName(), job.getJobGroup());
 
@@ -44,8 +46,10 @@ public class DemoRun {
 
 			// 不存在，创建一个
 			if (null == trigger) {
-				JobDetail jobDetail = JobBuilder.newJob(JobFactory.class)
+				JobDetail jobDetail = JobBuilder.newJob(JobTask.class)
 						.withIdentity(job.getJobName(), job.getJobGroup()).build();
+				jobDetail.isDurable();
+				jobDetail.requestsRecovery();
 				jobDetail.getJobDataMap().put(JobUtils.SCHEDULE_JOB, job);
 
 				// 表达式调度构建器
@@ -54,7 +58,7 @@ public class DemoRun {
 				// 按新的cronExpression表达式构建一个新的trigger
 				trigger = TriggerBuilder.newTrigger().withIdentity(job.getJobName(), job.getJobGroup())
 						.withSchedule(scheduleBuilder).build();
-
+				
 				scheduler.scheduleJob(jobDetail, trigger);
 			} else {
 				// Trigger已存在，那么更新相应的定时设置
@@ -118,44 +122,49 @@ public class DemoRun {
                 }
                 else if ( operation.equals("add") )
                 {	
-                	TaskJob taskJob = new TaskJob(args[1], args[0], args[2]);
+                	JobDO taskJob = new JobDO(args[1], args[0], args[2],args[3]);
                 	JobUtils.addJob(scheduler, taskJob);
                 }
                 else if ( operation.equals("delete") )
                 {
-                	TaskJob taskJob = new TaskJob(args[1], args[0], "");
+                	JobDO taskJob = new JobDO(args[1], args[0], "");
                 	JobUtils.deleteJob(scheduler, taskJob);
                 }
                 else if ( operation.equals("list_all") )
                 {
-                	List<TaskJob> list  = JobUtils.getAllJob(scheduler);
+                	List<JobDO> list  = JobUtils.getAllJob(scheduler);
                 	System.out.println("## list all job ");
-                	for(TaskJob taskJob : list){
-                		System.out.println("group = " + taskJob.getJobGroup()+"--job = " + taskJob.getJobName());
+                	for(JobDO taskJob : list){
+                		System.out.println("group = " + taskJob.getJobGroup()+"--job = " + taskJob.getJobName()+"--cron = "+taskJob.getCronExpression());
                 	}
                 }
                 else if ( operation.equals("list_run") )
                 {
-                	List<TaskJob> list  = JobUtils.getRunningJob(scheduler);
+                	List<JobDO> list  = JobUtils.getRunningJob(scheduler);
                 	System.out.println("## list all runing job ");
-                	for(TaskJob taskJob : list){
+                	for(JobDO taskJob : list){
                 		System.out.println("group = " + taskJob.getJobGroup()+"--job = " + taskJob.getJobName());
                 	}
                 }
                 else if ( operation.equals("pause") )
                 {
-                	TaskJob taskJob = new TaskJob(args[1], args[0], "");
+                	JobDO taskJob = new JobDO(args[1], args[0], "");
                     JobUtils.pauseJob(scheduler, taskJob);
                 }
                 else if ( operation.equals("resume") )
                 {
-                	TaskJob taskJob = new TaskJob(args[1], args[0]);
+                	JobDO taskJob = new JobDO(args[1], args[0]);
                     JobUtils.resumeJob(scheduler, taskJob);
                 }
                 else if ( operation.equals("updateCron") )
                 {
-                	TaskJob taskJob = new TaskJob(args[1], args[0],args[2]);
+                	JobDO taskJob = new JobDO(args[1], args[0],args[2]);
                     JobUtils.updateJobCron(scheduler, taskJob);
+                }
+                else if ( operation.equals("run_now") )
+                {
+                	JobDO taskJob = new JobDO(args[1], args[0]);
+                    JobUtils.runAJobNow(scheduler, taskJob);
                 }
                 else if ( operation.equals("quit") )
                 {
@@ -170,7 +179,7 @@ public class DemoRun {
 	private static void printHelp() {
 		System.out.println("####################\n");
 		System.out.println();
-		System.out.println("add <groupName> <jobName> <cronDesc>		=> [add=coupon=coupon-all-seller-vsearch=0/10 * * * * ?]");
+		System.out.println("add <groupName> <jobName> <cronDesc>		=> [add=coupon=coupon-all-seller-vsearch=0/10 * * * * ?=127.2.2.1:8001s]");
 		System.out.println("delete <groupName> <jobName>				=> [delete=coupon=coupon-all-seller-vsearch]");
 		System.out.println("list_all									=> [list_all]");
 		System.out.println("list_run									=> [list_run]");
