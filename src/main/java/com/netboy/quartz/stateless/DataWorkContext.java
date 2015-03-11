@@ -9,9 +9,9 @@ public class DataWorkContext {
 	 /**
      * 计划任务map
      */
-	private static Map<String, TaskJob> jobMap = new HashMap<String, TaskJob>();
+	private static Map<String, JobDO> jobMap = new HashMap<String, JobDO>();
 
-    static {
+/*    static {
         TaskJob job = new TaskJob();
         job.setJobId("10001");
         job.setJobName("coupon-buyer-vsearch");
@@ -21,14 +21,14 @@ public class DataWorkContext {
         job.setDesc("索引优化调度");
         
         addJob(job);
-    }
+    }*/
 
     /**
      * 添加任务
      *
      * @param scheduleJob
      */
-    public static void addJob(TaskJob scheduleJob) {
+    public static void addJob(JobDO scheduleJob) {
         jobMap.put(scheduleJob.getJobGroup() + "_" + scheduleJob.getJobName(), scheduleJob);
     }
 
@@ -38,7 +38,7 @@ public class DataWorkContext {
      * @param jobId
      * @return
      */
-    public static TaskJob getJob(String jobId) {
+    public static JobDO getJob(String jobId) {
         return jobMap.get(jobId);
     }
 
