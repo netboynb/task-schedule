@@ -1,22 +1,59 @@
 package com.netboy.resource.allot;
 
-public class InstanceMeta {
+import java.io.Serializable;
+
+public class InstanceMeta implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private Long appId;
 	private String ip;
-	private int port;
+	private int nettyPort;
+	private int httpPort;
 	/** 实例状态，0 未部署，1正在部署， 2 部署成功， -1 部署失败 ，3 等待部署 */
 	private int status;
 	private int nodeId;
 	private String room;
 	private String ipPort;
+	private int seqIdx;
 
 	public InstanceMeta(Long appId, String ip, int port, int status, int nodeId, String room) {
 		this.appId = appId;
 		this.ip = ip;
-		this.port = port;
+		this.nettyPort = port;
 		this.status = status;
 		this.nodeId = nodeId;
 		this.room = room;
+	}
+	public InstanceMeta(){
+		
+	}
+	public boolean isEqualsIp( InstanceMeta meta){
+		if(ip.equals(meta.getIp())){
+			return true;
+		}
+		return false;
+	}
+	
+	public int getNettyPort() {
+		return nettyPort;
+	}
+	public void setNettyPort(int nettyPort) {
+		this.nettyPort = nettyPort;
+	}
+	public int getHttpPort() {
+		return httpPort;
+	}
+	public void setHttpPort(int httpPort) {
+		this.httpPort = httpPort;
+	}
+	public void setIpPort(String ipPort) {
+		this.ipPort = ipPort;
+	}
+	public int getSeqIdx() {
+		return seqIdx;
+	}
+
+	public void setSeqIdx(int seqIdx) {
+		this.seqIdx = seqIdx;
 	}
 
 	public Long getAppId() {
@@ -35,13 +72,6 @@ public class InstanceMeta {
 		this.ip = ip;
 	}
 
-	public int getPort() {
-		return port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
-	}
 
 	public int getStatus() {
 		return status;
@@ -68,6 +98,6 @@ public class InstanceMeta {
 	}
 
 	public String getIpPort() {
-		return ip + ":" + port;
+		return ip + ":" + nettyPort;
 	}
 }
