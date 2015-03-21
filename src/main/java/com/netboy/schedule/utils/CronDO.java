@@ -1,4 +1,4 @@
-package com.netboy.quartz.utils;
+package com.netboy.schedule.utils;
 
 /**
  * deal CronExpression

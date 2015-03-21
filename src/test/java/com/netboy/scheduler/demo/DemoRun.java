@@ -1,4 +1,4 @@
-package com.netboy.quartz.stateless;
+package com.netboy.scheduler.demo;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -23,8 +23,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.google.common.collect.Lists;
-import com.netboy.quartz.job.JobTask;
-import com.netboy.quartz.utils.JobUtils;
+import com.netboy.schedule.job.JobTask;
+import com.netboy.schedule.job.TaskDO;
+import com.netboy.schedule.utils.JobUtils;
 import com.netboy.zk.demo.discovery.ExampleServer;
 import com.netboy.zk.demo.discovery.InstanceDetails;
 
@@ -35,9 +36,9 @@ public class DemoRun {
 		Scheduler scheduler = (StdScheduler) springContext.getBean("schedulerFactoryBean");
 
 		// 这里获取任务信息数据
-		List<JobDO> jobList = DataWorkContext.getAllJob();
+		List<TaskDO> jobList = null;
 
-		for (JobDO job : jobList) {
+		for (TaskDO job : jobList) {
 
 			TriggerKey triggerKey = TriggerKey.triggerKey(job.getJobName(), job.getJobGroup());
 
@@ -122,48 +123,48 @@ public class DemoRun {
                 }
                 else if ( operation.equals("add") )
                 {	
-                	JobDO taskJob = new JobDO(args[1], args[0], args[2],args[3]);
+                	TaskDO taskJob = new TaskDO(args[1], args[0], args[2],args[3]);
                 	JobUtils.addJob(scheduler, taskJob);
                 }
                 else if ( operation.equals("delete") )
                 {
-                	JobDO taskJob = new JobDO(args[1], args[0], "");
+                	TaskDO taskJob = new TaskDO(args[1], args[0], "");
                 	JobUtils.deleteJob(scheduler, taskJob);
                 }
                 else if ( operation.equals("list_all") )
                 {
-                	List<JobDO> list  = JobUtils.getAllJob(scheduler);
+                	List<TaskDO> list  = JobUtils.getAllJob(scheduler);
                 	System.out.println("## list all job ");
-                	for(JobDO taskJob : list){
+                	for(TaskDO taskJob : list){
                 		System.out.println("group = " + taskJob.getJobGroup()+"--job = " + taskJob.getJobName()+"--cron = "+taskJob.getCronExpression());
                 	}
                 }
                 else if ( operation.equals("list_run") )
                 {
-                	List<JobDO> list  = JobUtils.getRunningJob(scheduler);
+                	List<TaskDO> list  = JobUtils.getRunningJob(scheduler);
                 	System.out.println("## list all runing job ");
-                	for(JobDO taskJob : list){
+                	for(TaskDO taskJob : list){
                 		System.out.println("group = " + taskJob.getJobGroup()+"--job = " + taskJob.getJobName());
                 	}
                 }
                 else if ( operation.equals("pause") )
                 {
-                	JobDO taskJob = new JobDO(args[1], args[0], "");
+                	TaskDO taskJob = new TaskDO(args[1], args[0], "");
                     JobUtils.pauseJob(scheduler, taskJob);
                 }
                 else if ( operation.equals("resume") )
                 {
-                	JobDO taskJob = new JobDO(args[1], args[0]);
+                	TaskDO taskJob = new TaskDO(args[1], args[0]);
                     JobUtils.resumeJob(scheduler, taskJob);
                 }
                 else if ( operation.equals("updateCron") )
                 {
-                	JobDO taskJob = new JobDO(args[1], args[0],args[2]);
+                	TaskDO taskJob = new TaskDO(args[1], args[0],args[2]);
                     JobUtils.updateJobCron(scheduler, taskJob);
                 }
                 else if ( operation.equals("run_now") )
                 {
-                	JobDO taskJob = new JobDO(args[1], args[0]);
+                	TaskDO taskJob = new TaskDO(args[1], args[0]);
                     JobUtils.runAJobNow(scheduler, taskJob);
                 }
                 else if ( operation.equals("quit") )
