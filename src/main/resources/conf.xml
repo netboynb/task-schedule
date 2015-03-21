@@ -9,12 +9,22 @@
 		<property name="jobFactory" ref="jobFactory" />
 	</bean>	
 	
-	<bean name="jobFactory" class="com.netboy.quartz.job.BeanJobFactory" >
-		<property name="port" ref="port" />
+	<bean name="jobFactory" class="com.netboy.schedule.job.BeanJobFactory" >
+		<property name="jobManager" ref="jobManager" />
 	</bean>
 	 
-	<bean id="port" class="java.lang.Integer">
-        <constructor-arg value="8061" />
-    </bean>
-
+	<bean id="jobManager" class="com.netboy.schedule.job.JobManager" init-method="init">
+		<property name="poolSize" value="10" />
+		<property name="initialDelay" value="1" />
+		<property name="period" value="10" />
+		<property name="handlerMap">
+                <map>  
+                    <entry key="1" value-ref="offLineHandler" />
+                    <entry key="2" value-ref="onLineHandler" />
+                </map>  
+        </property>
+	</bean>
+	<bean id="offLineHandler" class="com.netboy.shedule.handler.OffLineZkHandler"/>
+	<bean id="onLineHandler" class="com.netboy.shedule.handler.OnlineZkHanlder"/>
+	
 </beans>
