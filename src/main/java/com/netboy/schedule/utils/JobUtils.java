@@ -1,4 +1,4 @@
-package com.netboy.quartz.utils;
+package com.netboy.schedule.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +19,8 @@ import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.netboy.quartz.job.JobTask;
-import com.netboy.quartz.stateless.JobDO;
+import com.netboy.schedule.job.JobTask;
+import com.netboy.schedule.job.TaskDO;
 
 public class JobUtils {
 	public final static Logger LOGGER = LoggerFactory.getLogger(JobUtils.class);
@@ -33,7 +33,7 @@ public class JobUtils {
 	 * @param scheduleJob
 	 * @return -1 添加异常，0 添加成功，1 该调度已经存在
 	 */
-	public static int addJob(Scheduler scheduler, JobDO job) {
+	public static int addJob(Scheduler scheduler, TaskDO job) {
 		if (scheduler == null || job == null) {
 			LOGGER.error("scheduler == null || job == null");
 			return -1;
@@ -82,14 +82,14 @@ public class JobUtils {
 	 * @return
 	 * @throws SchedulerException
 	 */
-	public static List<JobDO> getAllJob(Scheduler scheduler) throws SchedulerException {
+	public static List<TaskDO> getAllJob(Scheduler scheduler) throws SchedulerException {
 		GroupMatcher<JobKey> matcher = GroupMatcher.anyJobGroup();
 		Set<JobKey> jobKeys = scheduler.getJobKeys(matcher);
-		List<JobDO> jobList = new ArrayList<JobDO>();
+		List<TaskDO> jobList = new ArrayList<TaskDO>();
 		for (JobKey jobKey : jobKeys) {
 			List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
 			for (Trigger trigger : triggers) {
-				JobDO job = new JobDO();
+				TaskDO job = new TaskDO();
 				job.setJobName(jobKey.getName());
 				job.setJobGroup(jobKey.getGroup());
 				job.setDesc("trigger:" + trigger.getKey());
@@ -112,11 +112,11 @@ public class JobUtils {
 	 * @return
 	 * @throws SchedulerException
 	 */
-	public static List<JobDO> getRunningJob(Scheduler scheduler) throws SchedulerException {
+	public static List<TaskDO> getRunningJob(Scheduler scheduler) throws SchedulerException {
 		List<JobExecutionContext> executingJobs = scheduler.getCurrentlyExecutingJobs();
-		List<JobDO> jobList = new ArrayList<JobDO>(executingJobs.size());
+		List<TaskDO> jobList = new ArrayList<TaskDO>(executingJobs.size());
 		for (JobExecutionContext executingJob : executingJobs) {
-			JobDO job = new JobDO();
+			TaskDO job = new TaskDO();
 			JobDetail jobDetail = executingJob.getJobDetail();
 			JobKey jobKey = jobDetail.getKey();
 			Trigger trigger = executingJob.getTrigger();
@@ -141,7 +141,7 @@ public class JobUtils {
 	 * @param scheduleJob
 	 * @throws SchedulerException
 	 */
-	public static void pauseJob(Scheduler scheduler, JobDO taskJob) throws SchedulerException {
+	public static void pauseJob(Scheduler scheduler, TaskDO taskJob) throws SchedulerException {
 		JobKey jobKey = JobKey.jobKey(taskJob.getJobName(), taskJob.getJobGroup());
 		scheduler.pauseJob(jobKey);
 	}
@@ -152,7 +152,7 @@ public class JobUtils {
 	 * @param scheduleJob
 	 * @throws SchedulerException
 	 */
-	public static void resumeJob(Scheduler scheduler, JobDO taskJob) throws SchedulerException {
+	public static void resumeJob(Scheduler scheduler, TaskDO taskJob) throws SchedulerException {
 		JobKey jobKey = JobKey.jobKey(taskJob.getJobName(), taskJob.getJobGroup());
 		scheduler.resumeJob(jobKey);
 	}
@@ -163,7 +163,7 @@ public class JobUtils {
 	 * @param scheduleJob
 	 * @throws SchedulerException
 	 */
-	public static void deleteJob(Scheduler scheduler, JobDO taskJob) throws SchedulerException {
+	public static void deleteJob(Scheduler scheduler, TaskDO taskJob) throws SchedulerException {
 		JobKey jobKey = JobKey.jobKey(taskJob.getJobName(), taskJob.getJobGroup());
 		scheduler.deleteJob(jobKey);
 
@@ -175,7 +175,7 @@ public class JobUtils {
 	 * @param scheduleJob
 	 * @throws SchedulerException
 	 */
-	public static void runAJobNow(Scheduler scheduler, JobDO taskJob) throws SchedulerException {
+	public static void runAJobNow(Scheduler scheduler, TaskDO taskJob) throws SchedulerException {
 		JobKey jobKey = JobKey.jobKey(taskJob.getJobName(), taskJob.getJobGroup());
 		scheduler.triggerJob(jobKey);
 	}
@@ -186,7 +186,7 @@ public class JobUtils {
 	 * @param scheduleJob
 	 * @throws SchedulerException
 	 */
-	public static void updateJobCron(Scheduler scheduler, JobDO taskJob) throws SchedulerException {
+	public static void updateJobCron(Scheduler scheduler, TaskDO taskJob) throws SchedulerException {
 		TriggerKey triggerKey = TriggerKey.triggerKey(taskJob.getJobName(), taskJob.getJobGroup());
 		CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
 		CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(taskJob.getCronExpression());

@@ -1,4 +1,4 @@
-package com.netboy.quartz.job;
+package com.netboy.schedule.job;
 
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
@@ -7,8 +7,7 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.netboy.quartz.stateless.JobDO;
-import com.netboy.quartz.utils.JobUtils;
+import com.netboy.schedule.utils.JobUtils;
 
 @DisallowConcurrentExecution
 public abstract class JobAbstract implements Job {
@@ -17,7 +16,7 @@ public abstract class JobAbstract implements Job {
 	
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		JobDO taskJob = (JobDO) context.getMergedJobDataMap().get(JobUtils.SCHEDULE_JOB);
+		TaskDO taskJob = (TaskDO) context.getMergedJobDataMap().get(JobUtils.SCHEDULE_JOB);
 		Object jobInfo = new Object();
 		if (taskJob != null) {
 			jobInfo = new Object[] { taskJob.getJobId(), taskJob.getJobGroup(), taskJob.getJobName() };
@@ -36,7 +35,7 @@ public abstract class JobAbstract implements Job {
 	 * @param taskJob
 	 * @return true \ false 
 	 */
-	public abstract boolean doJob(JobExecutionContext context, JobDO taskJob);
+	public abstract boolean doJob(JobExecutionContext context, TaskDO taskJob);
 
 	public int getPort() {
 		return port;

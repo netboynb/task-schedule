@@ -5,5 +5,4 @@ public class ComUtils {
 	public static final String ALLOT_RESULT ="allot_result";
 	public static final String ALLOT_INFO = "allot_info";
 	public static final String ALLOT_STATUS = "allot_status";
-	
 }
