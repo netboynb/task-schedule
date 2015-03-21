@@ -1,109 +1,124 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.netboy.zk</groupId>
-  <artifactId>task-schedule</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>com.netboy.zk</groupId>
+	<artifactId>task-schedule</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <name>task-mag</name>
-  <url>http://maven.apache.org</url>
+	<name>task-mag</name>
+	<url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <curator.version>2.7.0</curator.version>
-    <quartz.version>2.2.1</quartz.version>
-    <spring.version>4.1.4.RELEASE</spring.version>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<curator.version>2.7.0</curator.version>
+		<quartz.version>2.2.1</quartz.version>
+		<spring.version>4.1.4.RELEASE</spring.version>
+		<http.version>4.0.2</http.version>
+	</properties>
 
-  <dependencies>
-  <!-- start curator -->
-	<dependency>
-	  <groupId>org.apache.curator</groupId>
-	  <artifactId>curator-recipes</artifactId>
-	  <version>${curator.version}</version>
-	  <exclusions>
-	  	<exclusion>
-	  		<artifactId>slf4j-api</artifactId>
-	  		<groupId>org.slf4j</groupId>
-	  	</exclusion>
-	  </exclusions>
-	</dependency>
+	<dependencies>
+		<!-- start curator -->
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-recipes</artifactId>
+			<version>${curator.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
-    <dependency>
-        <groupId>org.apache.curator</groupId>
-        <artifactId>curator-test</artifactId>
-        <version>${curator.version}</version>
-    </dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-test</artifactId>
+			<version>${curator.version}</version>
+		</dependency>
 
-    <dependency>
-        <groupId>org.apache.curator</groupId>
-        <artifactId>curator-x-discovery</artifactId>
-        <version>${curator.version}</version>
-    </dependency>
-  <!-- end curator -->
-  
-<!-- start quartz -->
-	<dependency>
-	  <groupId>org.quartz-scheduler</groupId>
-	  <artifactId>quartz</artifactId>
-	  <version>${quartz.version}</version>
-	  <exclusions>
-	  	<exclusion>
-	  		<artifactId>slf4j-api</artifactId>
-	  		<groupId>org.slf4j</groupId>
-	  	</exclusion>
-	  </exclusions>
-	</dependency>
-	
-	<dependency>
-	    <groupId>org.quartz-scheduler</groupId>
-	    <artifactId>quartz-jobs</artifactId>
-	    <version>${quartz.version}</version>
-	</dependency>
-<!-- end quartz -->
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-x-discovery</artifactId>
+			<version>${curator.version}</version>
+		</dependency>
+		<!-- end curator -->
 
-	<dependency>
-	  <groupId>org.springframework</groupId>
-	  <artifactId>spring-context-support</artifactId>
-	  <version>${spring.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-jdbc</artifactId>
-		<version>${spring.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>mysql</groupId>
-		<artifactId>mysql-connector-java</artifactId>
-		<version>5.1.21</version>
-		<scope>runtime</scope>
-	</dependency>
+		<!-- start quartz -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
-	<dependency>
-	  <groupId>com.google.code.gson</groupId>
-	  <artifactId>gson</artifactId>
-	  <version>2.3.1</version>
-	</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+			<version>${quartz.version}</version>
+		</dependency>
+		<!-- end quartz -->
 
-	<dependency>
-	  <groupId>commons-lang</groupId>
-	  <artifactId>commons-lang</artifactId>
-	  <version>2.6</version>
-	</dependency>
-    
-    <dependency>
-	    <groupId>org.slf4j</groupId>
-		<artifactId>slf4j-api</artifactId>
-	    <version>1.7.6</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+		<!-- start http -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpasyncclient</artifactId>
+			<version>${http.version}</version>
+		</dependency>
+		<!-- end http -->
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.21</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.com.sun.httpserver</groupId>
+			<artifactId>httpserver</artifactId>
+			<version>1.0.1.Final</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>
