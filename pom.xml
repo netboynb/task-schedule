@@ -12,7 +12,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<curator.version>2.7.0</curator.version>
+		<curator.version>2.7.1</curator.version>
 		<quartz.version>2.2.1</quartz.version>
 		<spring.version>4.1.4.RELEASE</spring.version>
 		<http.version>4.0.2</http.version>
@@ -33,9 +33,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.curator</groupId>
-			<artifactId>curator-test</artifactId>
-			<version>${curator.version}</version>
+		  <groupId>org.apache.curator</groupId>
+		  <artifactId>curator-test</artifactId>
+		  <version>2.7.0</version>
 		</dependency>
 
 		<dependency>
